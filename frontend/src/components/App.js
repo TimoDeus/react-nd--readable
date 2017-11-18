@@ -1,22 +1,10 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
 import Home from './Home';
 import {Route} from 'react-router-dom';
 import CategoryHome from './CategoryHome';
 import Post from './Post';
-import {fetchCategories} from '../actions/categories'
-import PropTypes from 'prop-types';
 
 class App extends Component {
-
-	static propTypes = {
-		dispatch: PropTypes.func.isRequired
-	};
-
-	componentWillMount() {
-		const {dispatch} = this.props;
-		dispatch(fetchCategories());
-	}
 
 	render() {
 		return (
@@ -35,4 +23,4 @@ class App extends Component {
 	}
 }
 
-export default connect()(App);
+export default App;

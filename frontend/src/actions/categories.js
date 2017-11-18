@@ -1,13 +1,26 @@
 import * as APIUtils from '../utils/APIUtils'
 
-const FETCH_CATEGORIES_REQUEST = 'FETCH_CATEGORIES_REQUEST';
-const FETCH_CATEGORIES_SUCCESS = 'FETCH_CATEGORIES_SUCCESS';
-const FETCH_CATEGORIES_FAILURE = 'FETCH_CATEGORIES_FAILURE';
+export const FETCH_CATEGORIES_SUCCESS = 'FETCH_CATEGORIES_SUCCESS';
+export const FETCH_CATEGORIES_REQUEST = 'FETCH_CATEGORIES_REQUEST';
+export const FETCH_CATEGORIES_FAILURE = 'FETCH_CATEGORIES_FAILURE';
 
-export const fetchCategories = () => dispatch => {
+const fetchCategories = () => dispatch => {
 	dispatch({type: FETCH_CATEGORIES_REQUEST});
 	return APIUtils.fetchCategories().then(
-		data => dispatch({type: FETCH_CATEGORIES_SUCCESS, data}),
-		() => dispatch({type: FETCH_CATEGORIES_FAILURE}),
+		res => dispatch({
+				type: FETCH_CATEGORIES_SUCCESS,
+				data: res.data.categories
+			}
+		),
+		error => dispatch({
+			type: FETCH_CATEGORIES_FAILURE,
+			error: error.message
+		}),
 	);
 };
+
+const shouldFetchCategories = ({categories}) =>
+	!categories || ( !categories.isFetching && !categories.error && !categories.data.length);
+
+export const fetchCategoriesIfNeeded = () => (dispatch, getState) =>
+	shouldFetchCategories(getState()) ? dispatch(fetchCategories()) : Promise.resolve();

@@ -1,7 +1,9 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:3001';
-const fetchCategoriesUrl = `${baseUrl}/categories`;
+axios.defaults.headers.common['Authorization'] = process.env.AUTHORIZATION_HEADER;
 
-// TODO add authentication header
-export const fetchCategories = () =>	axios.get(fetchCategoriesUrl);
+const baseUrl = 'http://localhost:3001';
+
+export const fetchCategories = () => axios.get(`${baseUrl}/categories`);
+export const fetchAllPosts = () => axios.get(`${baseUrl}/posts`);
+export const fetchCategoryPosts = category => axios.get(`${baseUrl}/${category}/posts`);
