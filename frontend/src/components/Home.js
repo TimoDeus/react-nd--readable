@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {fetchCategoriesIfNeeded} from '../actions/categories'
-import {fetchPostsIfNeeded} from '../actions/posts'
+import {fetchAllPostsIfNeeded} from '../actions/posts'
 import {statePropTypes} from '../utils/stateUtils';
 import {Link} from 'react-router-dom';
 
@@ -56,7 +56,7 @@ class Home extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-	fetchPostsIfNeeded: () => dispatch(fetchPostsIfNeeded()),
+	fetchPostsIfNeeded: () => dispatch(fetchAllPostsIfNeeded()),
 	fetchCategoriesIfNeeded: () => dispatch(fetchCategoriesIfNeeded())
 });
 

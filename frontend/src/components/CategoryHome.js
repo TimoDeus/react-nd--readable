@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {fetchPostsIfNeeded} from '../actions/posts'
+import {fetchCategoryPostsIfNeeded} from '../actions/posts'
 import {Link} from 'react-router-dom';
 
 class CategoryHome extends Component {
@@ -44,7 +44,7 @@ class CategoryHome extends Component {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-	fetchPostsIfNeeded: () => dispatch(fetchPostsIfNeeded(ownProps.category))
+	fetchPostsIfNeeded: () => dispatch(fetchCategoryPostsIfNeeded(ownProps.category))
 });
 
 const mapStateToProps = state => ({
