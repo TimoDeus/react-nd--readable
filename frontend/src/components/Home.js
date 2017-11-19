@@ -1,54 +1,24 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React from 'react';
 import PropTypes from 'prop-types';
-import {fetchCategoriesIfNeeded} from '../actions/categories'
-import {statePropTypes} from '../utils/propTypes';
 import CategoryList from './CategoryList';
 import PostList from './PostList';
 
-class Home extends Component {
 
-	static propTypes = {
-		fetchCategoriesIfNeeded: PropTypes.func.isRequired,
-		category: PropTypes.string,
-		categories: PropTypes.shape(statePropTypes).isRequired,
-		posts: PropTypes.shape(statePropTypes).isRequired
-	};
-
-	constructor(props) {
-		super(props);
-		this.state = {postModalOpen: false}
-	}
-
-	componentWillMount() {
-		this.fetchData(this.props);
-	}
-
-	fetchData() {
-		this.props.fetchCategoriesIfNeeded();
-	}
-
-	render() {
-		const {categories, posts, category} = this.props;
-		return (
-			<div>
-				<h2>Frontpage</h2>
-				<div className='container'>
-					{categories && <CategoryList categories={categories.data} selected={category}/>}
-					{posts && <PostList posts={posts.data} category={category}/>}
-				</div>
+const Home = props => {
+	const {category} = props;
+	return (
+		<div>
+			<h2>Frontpage</h2>
+			<div className='container'>
+				<CategoryList selected={category}/>
+				<PostList category={category}/>
 			</div>
-		)
-	}
-}
+		</div>
+	)
+};
 
-const mapDispatchToProps = dispatch => ({
-	fetchCategoriesIfNeeded: () => dispatch(fetchCategoriesIfNeeded()),
-});
+Home.propTypes = {
+	category: PropTypes.string,
+};
 
-const mapStateToProps = state => ({
-	categories: state.categories,
-	posts: state.posts
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default Home;
