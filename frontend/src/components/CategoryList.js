@@ -8,7 +8,7 @@ export const CategoryList = props => {
 		<div className='categories'>
 				{categories.map(cat =>
 						<Link key={cat.name} to={`/${cat.path}`}>
-							<input type="radio" checked={cat.name === selected} /> {cat.name}
+							<input type="radio" onChange={()=>{}} checked={cat.name === selected} /> {cat.name}
 						</Link>
 				)}
 		</div>

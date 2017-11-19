@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import {postPropTypes} from '../utils/propTypes';
 import VoteControls, {VOTE_POST} from './VoteControls';
+import {formatTimestamp} from '../utils/helper';
 
 export const PostSnippet = props => {
 	const {post} = props;
@@ -15,7 +16,7 @@ export const PostSnippet = props => {
 				</Link>
 			</div>
 			<div className='bottom'>
-				<span className='author'>{post.author}</span>
+				<span className='author'>{post.author} | {formatTimestamp(post.timestamp)}</span>
 			</div>
 		</div>
 	);
