@@ -6,6 +6,7 @@ import {fetchPostIfNeeded} from '../actions/posts';
 import Comment from './Comment';
 import {formatTimestamp} from '../utils/helper';
 import VoteControls, {VOTE_POST} from './VoteControls';
+import {postPropTypes} from '../utils/propTypes';
 
 class Post extends Component {
 
@@ -13,9 +14,7 @@ class Post extends Component {
 		fetchCommentsIfNeeded: PropTypes.func.isRequired,
 		fetchPost: PropTypes.func.isRequired,
 		comments: PropTypes.array.isRequired,
-		post: PropTypes.shape({
-			title: PropTypes.string
-		}),
+		post: PropTypes.shape(postPropTypes),
 		postId: PropTypes.string.isRequired,
 	};
 
