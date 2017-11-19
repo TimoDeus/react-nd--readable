@@ -3,6 +3,20 @@ import * as APIUtils from '../utils/APIUtils'
 export const FETCH_COMMENTS_SUCCESS = 'FETCH_COMMENTS_SUCCESS';
 export const FETCH_COMMENTS_REQUEST = 'FETCH_COMMENTS_REQUEST';
 export const FETCH_COMMENTS_FAILURE = 'FETCH_COMMENTS_FAILURE';
+export const UPVOTE_COMMENT = 'UPVOTE_COMMENT';
+export const DOWNVOTE_COMMENT = 'DOWNVOTE_COMMENT';
+
+export const upvoteComment = commentId => dispatch => {
+	return APIUtils.upvoteComment(commentId).then(
+		() => dispatch({type: UPVOTE_COMMENT})
+	)
+};
+
+export const downvoteComment = commentId => dispatch => {
+	return APIUtils.downvoteComment(commentId).then(
+		() => dispatch({type: DOWNVOTE_COMMENT})
+	)
+};
 
 const fetchComments = postId => dispatch => {
 	dispatch({type: FETCH_COMMENTS_REQUEST});

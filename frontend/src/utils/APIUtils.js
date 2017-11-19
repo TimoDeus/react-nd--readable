@@ -9,3 +9,9 @@ export const fetchPost = postId => axios.get(`${baseUrl}/posts/${postId}`);
 export const fetchAllPosts = () => axios.get(`${baseUrl}/posts`);
 export const fetchCategoryPosts = category => axios.get(`${baseUrl}/${category}/posts`);
 export const fetchComments = postId => axios.get(`${baseUrl}/posts/${postId}/comments`);
+
+const placeVote = (type, id, option) => axios.post(`${baseUrl}/${type}/${id}`, {option});
+export const upvotePost = postId => placeVote('posts', postId, 'upVote');
+export const downvotePost = postId => placeVote('posts', postId, 'downVote');
+export const upvoteComment = commentId => placeVote('comments', commentId, 'upVote');
+export const downvoteComment = commentId => placeVote('comments', commentId, 'downVote');

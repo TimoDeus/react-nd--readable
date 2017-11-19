@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 export const statePropTypes = {
 	isFetching: PropTypes.bool.isRequired,
 	error: PropTypes.string.isRequired,
-	data: PropTypes.array.isRequired,
+	data: PropTypes.array.isRequired
 };
 
 export const postPropTypes = {
@@ -15,5 +15,16 @@ export const postPropTypes = {
 	category: PropTypes.string.isRequired,
 	voteScore: PropTypes.number.isRequired,
 	deleted: PropTypes.bool.isRequired,
-	commentCount: PropTypes.number.isRequired,
+	commentCount: PropTypes.number.isRequired
+};
+
+export const commentPropTypes = {
+	id: PropTypes.string.isRequired,
+	parentId: PropTypes.string.isRequired,
+	timestamp: PropTypes.number.isRequired,
+	body: PropTypes.string.isRequired,
+	author: PropTypes.string.isRequired,
+	voteScore: PropTypes.number.isRequired,
+	deleted: PropTypes.bool.isRequired,
+	parentDeleted: PropTypes.bool.isRequired
 };

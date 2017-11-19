@@ -9,6 +9,20 @@ export const FETCH_POSTS_FAILURE = 'FETCH_POSTS_FAILURE';
 export const FETCH_CATEGORY_POSTS_SUCCESS = 'FETCH_CATEGORY_POSTS_SUCCESS';
 export const FETCH_CATEGORY_POSTS_REQUEST = 'FETCH_CATEGORY_POSTS_REQUEST';
 export const FETCH_CATEGORY_POSTS_FAILURE = 'FETCH_CATEGORY_POSTS_FAILURE';
+export const UPVOTE_POST = 'UPVOTE_POST';
+export const DOWNVOTE_POST = 'DOWNVOTE_POST';
+
+export const upvotePost = postId => dispatch => {
+	return APIUtils.upvotePost(postId).then(
+		() => dispatch({type: UPVOTE_POST})
+	)
+};
+
+export const downvotePost = postId => dispatch => {
+	return APIUtils.downvotePost(postId).then(
+		() => dispatch({type: DOWNVOTE_POST})
+	)
+};
 
 const doFetchPosts = (fetchMethod, {request, success, failure}) => dispatch => {
 	dispatch({type: request});
