@@ -2,14 +2,15 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {fetchCategoryPostsIfNeeded} from '../actions/posts'
-import {Link} from 'react-router-dom';
+import PostList from './PostList';
+import {statePropTypes} from '../utils/propTypes';
 
 class CategoryHome extends Component {
 
 	static propTypes = {
 		fetchPostsIfNeeded: PropTypes.func.isRequired,
 		category: PropTypes.string.isRequired,
-		posts: PropTypes.array.isRequired
+		posts: PropTypes.shape(statePropTypes).isRequired
 	};
 
 	componentWillMount() {
@@ -20,23 +21,9 @@ class CategoryHome extends Component {
 		const {category, posts} = this.props;
 		return (
 			<div>
-				<h1>Readable</h1>
-				<h3>{category}</h3>
+				<h2>{category}</h2>
 				<div className='container'>
-					<div className='posts'>
-						{posts.length ?
-							<ul>
-								{posts.map(post =>
-									<li key={post.id}>
-										<Link to={`/${post.category}/${post.id}`}>
-											{post.title}
-										</Link>
-									</li>
-								)}
-							</ul> :
-							<span className='empty'>Nothing to see, write the first post!</span>
-						}
-					</div>
+					<PostList posts={posts.data}/>
 				</div>
 			</div>
 		)
@@ -48,7 +35,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 });
 
 const mapStateToProps = state => ({
-	posts: state.posts.data
+	posts: state.posts
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryHome);

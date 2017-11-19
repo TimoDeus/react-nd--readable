@@ -19,8 +19,10 @@ const fetchComments = postId => dispatch => {
 	);
 };
 
-const shouldFetchComments = (postId, {comments}) =>
-	!comments.isFetching && !comments.error && !comments.data.every(comment => comment.parentId === postId);
+const shouldFetchComments = (postId, {comments}) => {
+	return !comments.isFetching && !comments.error &&
+		(!comments.data.length || !comments.data.every(comment => comment.parentId === postId));
+};
 
 export const fetchCommentsIfNeeded = postId => (dispatch, getState) =>
 	shouldFetchComments(postId, getState()) ? dispatch(fetchComments(postId)) : Promise.resolve();

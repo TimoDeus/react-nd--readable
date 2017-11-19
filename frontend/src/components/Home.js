@@ -3,8 +3,9 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {fetchCategoriesIfNeeded} from '../actions/categories'
 import {fetchAllPostsIfNeeded} from '../actions/posts'
-import {statePropTypes} from '../utils/stateUtils';
-import {Link} from 'react-router-dom';
+import {statePropTypes} from '../utils/propTypes';
+import CategoryList from './CategoryList';
+import PostList from './PostList';
 
 class Home extends Component {
 
@@ -24,31 +25,10 @@ class Home extends Component {
 		const {categories, posts} = this.props;
 		return (
 			<div>
-				<h1>Readable</h1>
-				<h3>Frontpage</h3>
+				<h2>Frontpage</h2>
 				<div className='container'>
-					<div className='categories'>
-						<ul>
-							{categories.data && categories.data.map(cat =>
-								<li key={cat.name}>
-									<Link to={`/${cat.path}`}>
-										{cat.name}
-									</Link>
-								</li>
-							)}
-						</ul>
-					</div>
-					<div className='posts'>
-						<ul>
-							{posts.data && posts.data.map(post =>
-								<li key={post.id}>
-									<Link to={`/${post.category}/${post.id}`}>
-										{post.title}
-									</Link>
-								</li>
-							)}
-						</ul>
-					</div>
+					{categories && <CategoryList categories={categories.data}/>}
+					{posts && <PostList posts={posts.data}/>}
 				</div>
 			</div>
 		)

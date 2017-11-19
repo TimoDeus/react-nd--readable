@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Home from './Home';
-import {Route} from 'react-router-dom';
+import {Link, Route} from 'react-router-dom';
 import CategoryHome from './CategoryHome';
 import Post from './Post';
 
@@ -9,6 +9,7 @@ class App extends Component {
 	render() {
 		return (
 			<div>
+				<Link to='/'><h1>Readable</h1></Link>
 				<Route exact path='/' render={() =>
 					<Home/>
 				}/>

@@ -10,7 +10,9 @@ class Post extends Component {
 		fetchCommentsIfNeeded: PropTypes.func.isRequired,
 		fetchPost: PropTypes.func.isRequired,
 		comments: PropTypes.array.isRequired,
-		post: PropTypes.oneOfType([PropTypes.shape({title: PropTypes.string}), PropTypes.array]).isRequired,
+		post: PropTypes.shape({
+			title: PropTypes.string
+		}),
 		postId: PropTypes.string.isRequired,
 	};
 
@@ -21,16 +23,25 @@ class Post extends Component {
 	}
 
 	render() {
-		const {post} = this.props;
+		const {post, comments} = this.props;
 		return (
 			<div>
-				<h1>Readable</h1>
-				<h3>Post</h3>
-				<div className='container'>
-					<div className='posts'>
-						<div>{post.title}</div>
+				{post && (
+					<div className='container'>
+						<div className='post'>
+							<h2>{post.title}</h2>
+						</div>
+						{comments && (
+							<div className='comments'>
+								{comments.map(comment => (
+									<div key={comment.id} className='comment'>
+										<div className='body'>{comment.body}</div>
+									</div>
+								))}
+							</div>
+						)}
 					</div>
-				</div>
+				)}
 			</div>
 		)
 	}
@@ -44,7 +55,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 const mapStateToProps = state => {
 	return {
 		comments: state.comments.data,
-		post: state.posts.data
+		post: state.posts.data.length > 0 ? state.posts.data[0] : undefined
 	};
 };
 

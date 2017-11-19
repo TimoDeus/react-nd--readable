@@ -1,11 +1,3 @@
-import {PropTypes} from 'prop-types';
-
-export const statePropTypes = {
-	isFetching: PropTypes.bool.isRequired,
-	error: PropTypes.string.isRequired,
-	data: PropTypes.array.isRequired,
-};
-
 export const initialState = {
 	isFetching: false,
 	error: '',
