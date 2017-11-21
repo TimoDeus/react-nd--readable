@@ -1,21 +1,26 @@
 import React, {Component} from 'react';
 import Home from './Home';
-import {Link, Route} from 'react-router-dom';
+import {Route} from 'react-router-dom';
 import Post from './Post';
+import theme from '../assets/react-toolbox/theme'
+import ThemeProvider from 'react-toolbox/lib/ThemeProvider';
+import AppBar from 'react-toolbox/lib/app_bar/AppBar';
 
 class App extends Component {
 
 	render() {
 		return (
-			<div>
-				<Link to='/'><h1>Readable</h1></Link>
-				<Route exact path='/:category?' render={({match}) =>
-					<Home {...match.params} />
-				}/>
-				<Route exact path='/:category/:postId' render={({match}) =>
-					<Post {...match.params} />
-				}/>
-			</div>
+			<ThemeProvider theme={theme}>
+				<div>
+					<AppBar title='Readable'/>
+					<Route exact path='/:category?' render={({match}) =>
+						<Home {...match.params} />
+					}/>
+					<Route exact path='/:category/:postId' render={({match}) =>
+						<Post {...match.params} />
+					}/>
+				</div>
+			</ThemeProvider>
 		)
 	}
 }

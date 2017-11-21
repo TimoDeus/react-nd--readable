@@ -6,6 +6,7 @@ import {formatTimestamp} from '../utils/helper';
 import {deletePost, fetchAllPostsIfNeeded, fetchCategoryPostsIfNeeded, writePost} from '../actions/posts';
 import {connect} from 'react-redux';
 import uuid from 'uuid'
+import Button from 'react-toolbox/lib/button/Button';
 
 const SORT_OPTIONS = [
 	{id: 'dateDesc', name: 'Sort by date (descending)', comparator: (a, b) => b.timestamp - a.timestamp},
@@ -72,7 +73,9 @@ class PostList extends Component {
 						)}
 					</select>
 				</div>
-				<button onClick={() => this.writeMockedPost()}>Write new post</button>
+
+				<Button label='Write new post' raised primary onMouseUp={() => this.writeMockedPost()}/>
+
 				<div className='posts'>
 					{sortedPosts.map(post =>
 						<div key={post.id} className='postSnippet'>
