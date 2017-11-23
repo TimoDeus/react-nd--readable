@@ -7,12 +7,16 @@ import {deletePost, fetchAllPostsIfNeeded, fetchCategoryPostsIfNeeded, writePost
 import {connect} from 'react-redux';
 import uuid from 'uuid'
 import Button from 'react-toolbox/lib/button/Button';
+import Dropdown from 'react-toolbox/lib/dropdown/Dropdown';
+import Card from 'react-toolbox/lib/card/Card';
+import CardTitle from 'react-toolbox/lib/card/CardTitle';
+import CardActions from 'react-toolbox/lib/card/CardActions';
 
 const SORT_OPTIONS = [
-	{id: 'dateDesc', name: 'Sort by date (descending)', comparator: (a, b) => b.timestamp - a.timestamp},
-	{id: 'dateAsc', name: 'Sort by date (ascending)', comparator: (a, b) => a.timestamp - b.timestamp},
-	{id: 'voteDesc', name: 'Sort by votes (descending)', comparator: (a, b) => b.voteScore - a.voteScore},
-	{id: 'voteAsc', name: 'Sort by votes (ascending)', comparator: (a, b) => a.voteScore - b.voteScore},
+	{value: 'dateDesc', label: 'Sort by date (descending)', comparator: (a, b) => b.timestamp - a.timestamp},
+	{value: 'dateAsc', label: 'Sort by date (ascending)', comparator: (a, b) => a.timestamp - b.timestamp},
+	{value: 'voteDesc', label: 'Sort by votes (descending)', comparator: (a, b) => b.voteScore - a.voteScore},
+	{value: 'voteAsc', label: 'Sort by votes (ascending)', comparator: (a, b) => a.voteScore - b.voteScore},
 ];
 
 class PostList extends Component {
@@ -34,11 +38,13 @@ class PostList extends Component {
 	}
 
 	fetchData(props) {
-		this.props.fetchPostsIfNeeded(props);
+		return this.props.fetchPostsIfNeeded(props).then(
+			({data}) => this.setState({posts: data})
+		);
 	}
 
-	setSortOrder(id) {
-		this.setState({sortBy: SORT_OPTIONS.find(opt => opt.id === id)});
+	setSortOrder(value) {
+		this.setState({sortBy: SORT_OPTIONS.find(opt => opt.value === value)});
 	}
 
 	writeMockedPost() {
@@ -50,7 +56,7 @@ class PostList extends Component {
 			timestamp: Date.now(),
 			category: this.props.category || 'react'
 		};
-		this.props.writeNewPost(post).then(
+		return this.props.writeNewPost(post).then(
 			() => this.fetchData(this.props)
 		);
 	}
@@ -66,31 +72,31 @@ class PostList extends Component {
 		const sortedPosts = posts.sort(this.state.sortBy.comparator);
 		return (
 			<div className='postsContainer'>
-				<div>
-					<select value={this.state.sortBy.id} onChange={event => this.setSortOrder(event.target.value)}>
-						{SORT_OPTIONS.map(opt =>
-							<option key={opt.id} value={opt.id}>{opt.name}</option>
-						)}
-					</select>
-				</div>
+
+				<Dropdown
+					source={SORT_OPTIONS}
+					onChange={this.setSortOrder}
+					value={this.state.sortBy.value}
+				/>
 
 				<Button label='Write new post' raised primary onMouseUp={() => this.writeMockedPost()}/>
 
 				<div className='posts'>
-					{sortedPosts.map(post =>
-						<div key={post.id} className='postSnippet'>
-							<div className='top'>
-								<VoteControls type={VOTE_POST} id={post.id} voteScore={post.voteScore}/>
-								<Link to={`/${post.category}/${post.id}`}>
-									{post.title}
-								</Link>
-							</div>
-							<div className='bottom'>
-						<span className='author'>{post.author} | {formatTimestamp(post.timestamp)} | <button
-							onClick={() => this.doDeletePost(post.id)}>Delete</button></span>
-							</div>
-						</div>
-					)}
+					{sortedPosts.map(post => (
+						<Card key={post.id}>
+							<Link key={post.id} to={`/${post.category}/${post.id}`}>
+								<CardTitle
+									title={post.title}
+									subtitle={`Written by ${post.author} on ${formatTimestamp(post.timestamp)} in ${post.category}`}
+								/>
+							</Link>
+							<CardActions>
+								<VoteControls type={VOTE_POST} id={post.id}/>
+								<Button label='Delete' onMouseUp={() => this.doDeletePost(post.id)}/>
+							</CardActions>
+						</Card>
+					))}
+
 					{!sortedPosts.length && <span className='empty'>Nothing to see, write the first post!</span>}
 				</div>
 			</div>
@@ -110,7 +116,7 @@ const mapDispatchToProps = dispatch => ({
 	deletePostById: postId => dispatch(deletePost(postId)),
 	fetchPostsIfNeeded: props => {
 		const fetcher = () => props.category ? fetchCategoryPostsIfNeeded(props.category) : fetchAllPostsIfNeeded();
-		dispatch(fetcher());
+		return dispatch(fetcher());
 	},
 	writeNewPost: post => dispatch(writePost(post))
 });

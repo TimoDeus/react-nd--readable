@@ -1,15 +1,17 @@
 import {
-	FETCH_POSTS_SUCCESS,
+	DOWNVOTE_POST_SUCCESS,
+	FETCH_CATEGORY_POSTS_FAILURE,
+	FETCH_CATEGORY_POSTS_REQUEST,
+	FETCH_CATEGORY_POSTS_SUCCESS,
+	FETCH_POST_FAILURE,
+	FETCH_POST_REQUEST,
+	FETCH_POST_SUCCESS,
 	FETCH_POSTS_FAILURE,
 	FETCH_POSTS_REQUEST,
-	FETCH_CATEGORY_POSTS_FAILURE,
-	FETCH_CATEGORY_POSTS_SUCCESS,
-	FETCH_CATEGORY_POSTS_REQUEST,
-	FETCH_POST_REQUEST,
-	FETCH_POST_FAILURE,
-	FETCH_POST_SUCCESS
+	FETCH_POSTS_SUCCESS,
+	UPVOTE_POST_SUCCESS
 } from '../actions/posts';
-import {initialState, handleFetchFailure, handleFetchRequest, handleFetchSuccess} from '../utils/stateUtils';
+import {handleFetchFailure, handleFetchRequest, handleFetchSuccess, initialState} from '../utils/stateUtils';
 
 const posts = (state = initialState, action) => {
 	switch (action.type) {
@@ -28,6 +30,16 @@ const posts = (state = initialState, action) => {
 			const res = handleFetchSuccess(state, action);
 			res.data = [res.data];
 			return res;
+		}
+		case UPVOTE_POST_SUCCESS: {
+			const newState = {...state, data: [...state.data]};
+			newState.data.find(post => post.id === action.payload).voteScore++;
+			return newState;
+		}
+		case DOWNVOTE_POST_SUCCESS: {
+			const newState = {...state, data: [...state.data]};
+			newState.data.find(post => post.id === action.payload).voteScore--;
+			return newState;
 		}
 		default:
 			return state;

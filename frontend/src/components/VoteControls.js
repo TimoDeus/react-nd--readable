@@ -19,13 +19,12 @@ class VoteControls extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {voteScore: props.voteScore};
 		this.triggerUpvote = this.triggerUpvote.bind(this);
 		this.triggerDownvote = this.triggerDownvote.bind(this);
 	}
 
 	render() {
-		const {voteScore} = this.state;
+		const {voteScore} = this.props;
 		return (
 			<div>
 				<button onClick={() => this.triggerDownvote()}>-</button>
@@ -36,25 +35,30 @@ class VoteControls extends Component {
 	}
 
 	triggerUpvote() {
-		this.setState({voteScore: this.state.voteScore + 1});
 		this.props.upvote();
 	}
 
 	triggerDownvote() {
-		this.setState({voteScore: this.state.voteScore - 1});
 		this.props.downvote();
 	}
 }
 
+const mapStateToProps = (state, ownProps) => {
+	const obj = ownProps.type === VOTE_COMMENT ? state.comments : state.posts;
+	return  obj.data.length ? {
+		voteScore: obj.data.find(item => item.id === ownProps.id).voteScore
+	} : {};
+};
+
 const mapDispatchToProps = (dispatch, ownProps) => ({
 	upvote: () => {
 		const upvoter = () => ownProps.type === VOTE_COMMENT ? upvoteComment(ownProps.id) : upvotePost(ownProps.id);
-		dispatch(upvoter());
+		return dispatch(upvoter());
 	},
 	downvote: () => {
 		const downvoter = () => ownProps.type === VOTE_COMMENT ? downvoteComment(ownProps.id) : downvotePost(ownProps.id);
-		dispatch(downvoter())
+		return dispatch(downvoter())
 	}
 });
 
-export default connect(null, mapDispatchToProps)(VoteControls);
+export default connect(mapStateToProps, mapDispatchToProps)(VoteControls);

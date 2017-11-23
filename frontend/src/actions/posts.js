@@ -41,7 +41,7 @@ export const writePost = post => dispatch => {
 export const upvotePost = postId => dispatch => {
 	dispatch({type: UPVOTE_POST_REQUEST});
 	return APIUtils.upvotePost(postId).then(
-		() => dispatch({type: UPVOTE_POST_SUCCESS}),
+		() => dispatch({type: UPVOTE_POST_SUCCESS, payload: postId}),
 		error => dispatch({type: UPVOTE_POST_FAILURE, error}),
 	)
 };
@@ -49,7 +49,7 @@ export const upvotePost = postId => dispatch => {
 export const downvotePost = postId => dispatch => {
 	dispatch({type: DOWNVOTE_POST_REQUEST});
 	return APIUtils.downvotePost(postId).then(
-		() => dispatch({type: DOWNVOTE_POST_SUCCESS}),
+		() => dispatch({type: DOWNVOTE_POST_SUCCESS, payload: postId}),
 		error => dispatch({type: DOWNVOTE_POST_FAILURE, error})
 	)
 };
