@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {fetchCategoriesIfNeeded} from '../actions/categories';
-import Tabs from 'react-toolbox/lib/tabs/Tabs';
-import Tab from 'react-toolbox/lib/tabs/Tab';
+import {Menu} from 'semantic-ui-react';
 
 export class CategoryList extends Component {
 
@@ -24,19 +23,19 @@ export class CategoryList extends Component {
 		return categories;
 	}
 
-	onTabChange(index) {
+	onTabChange(path) {
 		const {history} = this.props;
-		history.push(`/${this.getCategories()[index].path}`);
+		history.push(`/${path}`);
 	}
 
 	render() {
-		const {selected} = this.props;
+		const selected = this.props.selected || 'all';
 		const categories = this.getCategories();
-		const selectedIndex = Math.max(categories.findIndex(cat => cat.name === selected), 0);
 		return (
-			<Tabs index={selectedIndex} onChange={this.onTabChange} className='categories'>
-				{categories.map(cat => <Tab key={cat.name} label={cat.name}/> )}
-			</Tabs>
+			<Menu pointing secondary>
+				{categories.map(cat =>
+					<Menu.Item key={cat.name} name={cat.name} active={cat.name === selected} onClick={() => this.onTabChange(cat.path)}/>)}
+			</Menu>
 		);
 	}
 }

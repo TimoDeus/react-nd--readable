@@ -1,22 +1,17 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import VoteControls, {VOTE_POST} from './VoteControls';
-import {Link} from 'react-router-dom';
-import {formatTimestamp} from '../utils/helper';
 import {deletePost, fetchAllPostsIfNeeded, fetchCategoryPostsIfNeeded, writePost} from '../actions/posts';
 import {connect} from 'react-redux';
 import uuid from 'uuid'
-import Button from 'react-toolbox/lib/button/Button';
-import Dropdown from 'react-toolbox/lib/dropdown/Dropdown';
-import Card from 'react-toolbox/lib/card/Card';
-import CardTitle from 'react-toolbox/lib/card/CardTitle';
-import CardActions from 'react-toolbox/lib/card/CardActions';
+import {Button, Card, Container, Icon, Menu} from 'semantic-ui-react';
+import {formatTimestamp} from '../utils/helper';
+import {Link} from 'react-router-dom';
+import VoteControls, {VOTE_POST} from './VoteControls';
 
 const SORT_OPTIONS = [
-	{value: 'dateDesc', label: 'Sort by date (descending)', comparator: (a, b) => b.timestamp - a.timestamp},
-	{value: 'dateAsc', label: 'Sort by date (ascending)', comparator: (a, b) => a.timestamp - b.timestamp},
-	{value: 'voteDesc', label: 'Sort by votes (descending)', comparator: (a, b) => b.voteScore - a.voteScore},
-	{value: 'voteAsc', label: 'Sort by votes (ascending)', comparator: (a, b) => a.voteScore - b.voteScore},
+	{value: 'newest', comparator: (a, b) => b.timestamp - a.timestamp},
+	{value: 'mostComments', comparator: (a, b) => b.commentCount - a.commentCount},
+	{value: 'mostPopular', comparator: (a, b) => b.voteScore - a.voteScore}
 ];
 
 class PostList extends Component {
@@ -43,8 +38,8 @@ class PostList extends Component {
 		);
 	}
 
-	setSortOrder(value) {
-		this.setState({sortBy: SORT_OPTIONS.find(opt => opt.value === value)});
+	setSortOrder(data) {
+		this.setState({sortBy: data});
 	}
 
 	writeMockedPost() {
@@ -62,9 +57,11 @@ class PostList extends Component {
 	}
 
 	doDeletePost(postId) {
-		return this.props.deletePostById(postId).then(
+		this.props.deletePostById(postId).then(
 			() => this.fetchData(this.props)
 		);
+		return false;
+
 	}
 
 	render() {
@@ -73,29 +70,43 @@ class PostList extends Component {
 		return (
 			<div className='postsContainer'>
 
-				<Dropdown
-					source={SORT_OPTIONS}
-					onChange={this.setSortOrder}
-					value={this.state.sortBy.value}
-				/>
-
-				<Button label='Write new post' raised primary onMouseUp={() => this.writeMockedPost()}/>
+				<Menu secondary>
+					<Menu.Item>
+						<Button primary onClick={() => this.writeMockedPost()}>Write new post</Button>
+					</Menu.Item>
+					<Menu.Item position='right'>
+						{SORT_OPTIONS.map(option =>
+							(<Menu.Item key={option.value} name={option.value} option={option}
+													active={option.value === this.state.sortBy.value}
+													onClick={(event, data) => this.setSortOrder(data.option)}/>)
+						)}
+					</Menu.Item>
+				</Menu>
 
 				<div className='posts'>
-					{sortedPosts.map(post => (
-						<Card key={post.id}>
-							<Link key={post.id} to={`/${post.category}/${post.id}`}>
-								<CardTitle
-									title={post.title}
-									subtitle={`Written by ${post.author} on ${formatTimestamp(post.timestamp)} in ${post.category}`}
-								/>
-							</Link>
-							<CardActions>
-								<VoteControls type={VOTE_POST} id={post.id}/>
-								<Button label='Delete' onMouseUp={() => this.doDeletePost(post.id)}/>
-							</CardActions>
-						</Card>
-					))}
+					<Card.Group>
+						{sortedPosts.map(post => (
+							<Card key={post.id} fluid color='blue'>
+								<Card.Content>
+									<Card.Header>
+										<Link to={`/${post.category}/${post.id}`}>{post.title}</Link>
+										<div style={{float: 'right'}}><VoteControls type={VOTE_POST} id={post.id}/></div>
+									</Card.Header>
+									<Card.Meta>
+										Written by <b>{post.author}</b> in <Link to={`/${post.category}`}><b>{post.category}</b></Link>
+										| {formatTimestamp(post.timestamp)}
+									</Card.Meta>
+									<Card.Description floated='left'>
+									</Card.Description>
+								</Card.Content>
+								<Card.Content extra>
+									<Icon name='comment'/>
+									{post.commentCount} Comment(s)
+									<Button icon floated='right' size='mini' onClick={() => this.doDeletePost(post.id)}><Icon name='trash'/> Delete</Button>
+								</Card.Content>
+							</Card>
+						))}
+					</Card.Group>
 
 					{!sortedPosts.length && <span className='empty'>Nothing to see, write the first post!</span>}
 				</div>

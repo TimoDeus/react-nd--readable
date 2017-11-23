@@ -1,74 +1,35 @@
 {
-	"name": "frontend",
-	"version": "0.1.0",
-	"private": true,
-	"dependencies": {
-		"axios": "^0.17.1",
-		"prop-types": "^15.6.0",
-		"react": "^16.1.1",
-		"react-dom": "^16.1.1",
-		"react-icons": "^2.2.7",
-		"react-loading": "^1.0.2",
-		"react-modal": "^3.1.2",
-		"react-redux": "^5.0.6",
-		"react-router-dom": "^4.2.2",
-		"react-scripts": "1.0.17",
-		"react-toolbox": "^2.0.0-beta.12",
-		"redux": "^3.7.2",
-		"redux-logger": "^3.0.6",
-		"redux-thunk": "^2.2.0",
-		"uuid": "^3.1.0"
-	},
-	"scripts": {
-		"start": "react-scripts start",
-		"build": "react-scripts build",
-		"test": "react-scripts test --env=jsdom",
-		"eject": "react-scripts eject",
-		"toolbox": "react-toolbox-themr"
-	},
-	"reactToolbox": {
-		"include": [
-			"AUTOCOMPLETE",
-			"AVATAR",
-			"BUTTON",
-			"CARD",
-			"CHECKBOX",
-			"CHIP",
-			"DATE_PICKER",
-			"DIALOG",
-			"DRAWER",
-			"DROPDOWN",
-			"INPUT",
-			"LAYOUT",
-			"LINK",
-			"LIST",
-			"MENU",
-			"NAVIGATION",
-			"OVERLAY",
-			"PROGRESS_BAR",
-			"RADIO",
-			"RIPPLE",
-			"SLIDER",
-			"SNACKBAR",
-			"SWITCH",
-			"TABLE",
-			"TABS",
-			"TIME_PICKER",
-			"TOOLTIP"
-		],
-		"customProperties": {
-			"animation-duration": "0.3s",
-			"color-accent": "var(--palette-blue-a200)",
-			"color-accent-dark": "var(--palette-blue-700)",
-			"color-primary-contrast": "var(--color-dark-contrast)",
-			"color-accent-contrast": "var(--color-dark-contrast)"
-		},
-		"output": "src/assets/react-toolbox"
-	},
-	"devDependencies": {
-		"babel-eslint": "^8.0.2",
-		"eslint": "^4.11.0",
-		"eslint-plugin-react": "^7.4.0",
-		"react-toolbox-themr": "^1.0.2"
-	}
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.17.1",
+    "prop-types": "^15.6.0",
+    "react": "^16.1.1",
+    "react-dom": "^16.1.1",
+    "react-icons": "^2.2.7",
+    "react-loading": "^1.0.2",
+    "react-modal": "^3.1.2",
+    "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.0.17",
+    "redux": "^3.7.2",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.2.0",
+    "semantic-ui-css": "^2.2.12",
+    "semantic-ui-react": "^0.76.0",
+    "uuid": "^3.1.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.0.2",
+    "eslint": "^4.11.0",
+    "eslint-plugin-react": "^7.4.0",
+    "react-toolbox-themr": "^1.0.2"
+  }
 }
