@@ -13,16 +13,6 @@ import {withRouter} from 'react-router-dom';
 
 class PostDetails extends Component {
 
-	static propTypes = {
-		fetchCommentsIfNeeded: PropTypes.func.isRequired,
-		fetchPost: PropTypes.func.isRequired,
-		comments: PropTypes.array.isRequired,
-		post: PropTypes.shape(postPropTypes),
-		postId: PropTypes.string.isRequired,
-		category: PropTypes.string.isRequired,
-		history: PropTypes.shape().isRequired,
-	};
-
 	componentWillMount() {
 		this.props.fetchCommentsIfNeeded();
 		this.props.fetchPost();
@@ -78,6 +68,16 @@ class PostDetails extends Component {
 		) : null;
 	}
 }
+
+PostDetails.propTypes = {
+	fetchCommentsIfNeeded: PropTypes.func.isRequired,
+	fetchPost: PropTypes.func.isRequired,
+	comments: PropTypes.array.isRequired,
+	post: PropTypes.shape(postPropTypes),
+	postId: PropTypes.string.isRequired,
+	category: PropTypes.string.isRequired,
+	history: PropTypes.shape().isRequired,
+};
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
 	fetchCommentsIfNeeded: () => dispatch(fetchCommentsIfNeeded(ownProps.postId)),

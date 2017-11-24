@@ -10,15 +10,6 @@ import {deletePost} from '../actions/posts';
 
 class Post extends Component {
 
-	static propTypes = {
-		isPreview: PropTypes.bool.isRequired,
-		deletePostById: PropTypes.func.isRequired,
-		editPostById: PropTypes.func.isRequired,
-		postId: PropTypes.string.isRequired,
-		post: PropTypes.shape(postPropTypes).isRequired,
-		history: PropTypes.shape().isRequired,
-	};
-
 	constructor(props) {
 		super(props);
 		this.onDeletePost = this.onDeletePost.bind(this);
@@ -71,6 +62,15 @@ class Post extends Component {
 		) : null;
 	}
 }
+
+Post.propTypes = {
+	isPreview: PropTypes.bool.isRequired,
+	deletePostById: PropTypes.func.isRequired,
+	editPostById: PropTypes.func.isRequired,
+	postId: PropTypes.string.isRequired,
+	post: PropTypes.shape(postPropTypes).isRequired,
+	history: PropTypes.shape().isRequired,
+};
 
 const mapDispatchToProps = dispatch => ({
 	deletePostById: postId => dispatch(deletePost(postId)),

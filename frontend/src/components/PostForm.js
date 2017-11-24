@@ -8,14 +8,6 @@ import {writePost} from '../actions/posts';
 
 class PostForm extends Component {
 
-	static propTypes = {
-		writeNewPost: PropTypes.func.isRequired,
-		categories: PropTypes.array.isRequired,
-		selectedCategory: PropTypes.string,
-		postId: PropTypes.string,
-		post: PropTypes.shape(postPropTypes),
-	};
-
 	constructor(props) {
 		super(props);
 		const {post, selectedCategory} = props;
@@ -76,6 +68,14 @@ class PostForm extends Component {
 		);
 	}
 }
+
+PostForm.propTypes = {
+	writeNewPost: PropTypes.func.isRequired,
+	categories: PropTypes.array.isRequired,
+	selectedCategory: PropTypes.string,
+	postId: PropTypes.string,
+	post: PropTypes.shape(postPropTypes),
+};
 
 const mapDispatchToProps = dispatch => ({
 	writeNewPost: post => dispatch(writePost(post))

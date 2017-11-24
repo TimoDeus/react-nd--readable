@@ -9,14 +9,6 @@ export const VOTE_POST = 'post';
 
 class VoteControls extends Component {
 
-	static propTypes = {
-		id: PropTypes.string.isRequired,
-		type: PropTypes.string.isRequired,
-		voteScore: PropTypes.number.isRequired,
-		upvote: PropTypes.func.isRequired,
-		downvote: PropTypes.func.isRequired,
-	};
-
 	constructor(props) {
 		super(props);
 		this.triggerUpvote = this.triggerUpvote.bind(this);
@@ -42,6 +34,14 @@ class VoteControls extends Component {
 		this.props.downvote();
 	}
 }
+
+VoteControls.propTypes = {
+	id: PropTypes.string.isRequired,
+	type: PropTypes.string.isRequired,
+	voteScore: PropTypes.number.isRequired,
+	upvote: PropTypes.func.isRequired,
+	downvote: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = (state, ownProps) => {
 	const obj = ownProps.type === VOTE_COMMENT ? state.comments : state.posts;
