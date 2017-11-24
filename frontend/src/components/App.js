@@ -2,13 +2,13 @@ import React, {Component} from 'react';
 import Home from './Home';
 import {Link, Route} from 'react-router-dom';
 import Post from './Post';
-import {Menu} from 'semantic-ui-react'
+import {Container, Menu} from 'semantic-ui-react'
 
 class App extends Component {
 
 	render() {
 		return (
-			<div>
+			<Container>
 				<Menu inverted>
 					<Menu.Item header>
 						<Link to='/'>Readable</Link>
@@ -20,7 +20,7 @@ class App extends Component {
 				<Route exact path='/:category/:postId' render={({match}) =>
 					<Post {...match.params} />
 				}/>
-			</div>
+			</Container>
 		)
 	}
 }
