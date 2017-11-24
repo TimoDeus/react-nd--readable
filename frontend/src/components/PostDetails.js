@@ -8,7 +8,7 @@ import VoteControls, {VOTE_COMMENT} from './VoteControls';
 import {postPropTypes} from '../utils/propTypes';
 import {Button, Comment, Container, Divider, Header, Icon, Menu} from 'semantic-ui-react';
 import AppHeader from './Header';
-import Post from './Post';
+import Post from './Post.js';
 import {withRouter} from 'react-router-dom';
 
 class PostDetails extends Component {
@@ -30,15 +30,12 @@ class PostDetails extends Component {
 				<AppHeader selected={category}/>
 
 				<Menu secondary>
-					<Menu.Item position='left'>
+					<Menu.Item>
 						<Button primary onClick={() => this.navigateBack()}>Back</Button>
-					</Menu.Item>
-					<Menu.Item position='right'>
-						<span>something</span>
 					</Menu.Item>
 				</Menu>
 
-				<Post isPreview={false} onDeletePost={this.doDeletePost} postId={post.id}/>
+				<Post isPreview={false} postId={post.id}/>
 
 				<div>
 					<Button floated={'right'} primary onClick={() => this.toggleWritePostModal()}>Write comment</Button>

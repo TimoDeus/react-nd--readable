@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {Button, Form} from 'semantic-ui-react';
 import {postPropTypes} from '../utils/propTypes';
 import uuid from 'uuid'
-import {writePost} from '../actions/posts';
+import {addPost, editPost} from '../actions/posts';
 
 class PostForm extends Component {
 
@@ -25,6 +25,11 @@ class PostForm extends Component {
 	};
 
 	handleSubmit = () => {
+		const isEditMode = !!this.props.postId;
+		isEditMode ? this.editPost() : this.addPost()
+	};
+
+	addPost() {
 		const {formAuthor, formCategory, formBody, formTitle} = this.state;
 		if (formAuthor && formCategory && formBody && formTitle) {
 			const post = {
@@ -35,23 +40,37 @@ class PostForm extends Component {
 				timestamp: Date.now(),
 				category: formCategory
 			};
-			return this.props.writeNewPost(post);
+			return this.props.dispatchAddPost(post);
 		}
-	};
+	}
+
+	editPost() {
+		const {postId} = this.props;
+		const {formBody, formTitle} = this.state;
+		if (formBody && formTitle) {
+			const post = {
+				id: postId,
+				title: formTitle,
+				body: formBody,
+			};
+			return this.props.dispatchEditPost(post);
+		}
+	}
 
 	render() {
 		const {categories} = this.props;
 		const {formAuthor, formCategory, formBody, formTitle} = this.state;
+		const isEditMode = !!this.props.postId;
 		return (
 			<Form onSubmit={this.handleSubmit}>
 				<Form.Group widths='equal'>
 					<Form.Input
 						label='Author' name='formAuthor' placeholder='Author' value={formAuthor}
-						required onChange={this.handleChange}
+						required disabled={isEditMode} onChange={this.handleChange}
 					/>
 					<Form.Select
 						label='Category' placeholder='Category' name='formCategory' required value={formCategory}
-						onChange={this.handleChange}
+						onChange={this.handleChange} disabled={isEditMode}
 						options={categories.map(cat => ({key: cat, value: cat, text: cat}))}
 					/>
 				</Form.Group>
@@ -70,7 +89,8 @@ class PostForm extends Component {
 }
 
 PostForm.propTypes = {
-	writeNewPost: PropTypes.func.isRequired,
+	dispatchAddPost: PropTypes.func.isRequired,
+	dispatchEditPost: PropTypes.func.isRequired,
 	categories: PropTypes.array.isRequired,
 	selectedCategory: PropTypes.string,
 	postId: PropTypes.string,
@@ -78,7 +98,8 @@ PostForm.propTypes = {
 };
 
 const mapDispatchToProps = dispatch => ({
-	writeNewPost: post => dispatch(writePost(post))
+	dispatchAddPost: post => dispatch(addPost(post)),
+	dispatchEditPost: post => dispatch(editPost(post))
 });
 
 const mapStateToProps = (state, ownProps) => ({

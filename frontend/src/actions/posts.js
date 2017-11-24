@@ -12,6 +12,9 @@ export const FETCH_CATEGORY_POSTS_FAILURE = 'FETCH_CATEGORY_POSTS_FAILURE';
 export const WRITE_POST_REQUEST = 'WRITE_POST_REQUEST';
 export const WRITE_POST_SUCCESS = 'WRITE_POST_SUCCESS';
 export const WRITE_POST_FAILURE = 'WRITE_POST_FAILURE';
+export const EDIT_POST_REQUEST = 'EDIT_POST_REQUEST';
+export const EDIT_POST_SUCCESS = 'EDIT_POST_SUCCESS';
+export const EDIT_POST_FAILURE = 'EDIT_POST_FAILURE';
 export const UPVOTE_POST_SUCCESS = 'UPVOTE_POST_SUCCESS';
 export const UPVOTE_POST_REQUEST = 'UPVOTE_POST_REQUEST';
 export const UPVOTE_POST_FAILURE = 'UPVOTE_POST_FAILURE';
@@ -30,13 +33,19 @@ export const deletePost = postId => dispatch => {
 	)
 };
 
-export const writePost = post => dispatch => {
+export const addPost = post => dispatch => {
 	dispatch({type: WRITE_POST_REQUEST});
 	return APIUtils.writePost(post).then(
-		({data}) => {
-			return dispatch({type: WRITE_POST_SUCCESS, post: data})
-		},
+		({data}) => dispatch({type: WRITE_POST_SUCCESS, post: data}),
 		error => dispatch({type: WRITE_POST_FAILURE, error})
+	)
+};
+
+export const editPost = post => dispatch => {
+	dispatch({type: EDIT_POST_REQUEST});
+	return APIUtils.editPost(post).then(
+		({data}) => dispatch({type: EDIT_POST_SUCCESS, post: data}),
+		error => dispatch({type: EDIT_POST_FAILURE, error})
 	)
 };
 

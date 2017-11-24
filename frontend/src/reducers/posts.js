@@ -11,7 +11,8 @@ import {
 	FETCH_POSTS_SUCCESS,
 	UPVOTE_POST_SUCCESS,
 	WRITE_POST_SUCCESS,
-	DELETE_POST_SUCCESS
+	DELETE_POST_SUCCESS,
+	EDIT_POST_SUCCESS
 } from '../actions/posts';
 import {handleFetchFailure, handleFetchRequest, handleFetchSuccess, initialState} from '../utils/stateUtils';
 
@@ -49,6 +50,12 @@ const posts = (state = initialState, action) => {
 		case DELETE_POST_SUCCESS: {
 			const newState = {...state, data: [...state.data]};
 			newState.data = newState.data.filter(post => post.id !== action.payload);
+			return newState;
+		}
+		case EDIT_POST_SUCCESS: {
+			const newState = {...state, data: [...state.data]};
+			const index = newState.data.findIndex(post => post.id === action.post.id);
+			newState.data[index] = action.post;
 			return newState;
 		}
 		default:

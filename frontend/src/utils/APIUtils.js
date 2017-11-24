@@ -10,6 +10,7 @@ export const fetchAllPosts = () => axios.get(`${baseUrl}/posts`);
 export const fetchCategoryPosts = category => axios.get(`${baseUrl}/${category}/posts`);
 export const fetchComments = postId => axios.get(`${baseUrl}/posts/${postId}/comments`);
 export const writePost = post => axios.post(`${baseUrl}/posts`, post);
+export const editPost = post => axios.put(`${baseUrl}/posts/${post.id}`, post);
 export const deletePost = postId => axios.delete(`${baseUrl}/posts/${postId}`);
 
 const placeVote = (type, id, option) => axios.post(`${baseUrl}/${type}/${id}`, {option});

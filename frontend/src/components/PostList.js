@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {fetchAllPostsIfNeeded, fetchCategoryPostsIfNeeded, writePost} from '../actions/posts';
+import {fetchAllPostsIfNeeded, fetchCategoryPostsIfNeeded, addPost} from '../actions/posts';
 import {connect} from 'react-redux';
 import {Button, Card, Container, Menu, Modal} from 'semantic-ui-react';
 import Header from './Header';
@@ -94,7 +94,7 @@ PostList.propTypes = {
 	posts: PropTypes.array.isRequired,
 	isFetching: PropTypes.bool.isRequired,
 	fetchPostsIfNeeded: PropTypes.func.isRequired,
-	writeNewPost: PropTypes.func.isRequired,
+	dispatchAddPost: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
@@ -102,7 +102,7 @@ const mapDispatchToProps = dispatch => ({
 		const fetcher = () => props.category ? fetchCategoryPostsIfNeeded(props.category) : fetchAllPostsIfNeeded();
 		return dispatch(fetcher());
 	},
-	writeNewPost: post => dispatch(writePost(post))
+	dispatchAddPost: post => dispatch(addPost(post))
 });
 
 const mapStateToProps = state => ({
