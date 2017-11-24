@@ -25,7 +25,7 @@ export const DELETE_POST_FAILURE = 'DELETE_POST_FAILURE';
 export const deletePost = postId => dispatch => {
 	dispatch({type: DELETE_POST_REQUEST});
 	return APIUtils.deletePost(postId).then(
-		() => dispatch({type: DELETE_POST_SUCCESS}),
+		({data}) => dispatch({type: DELETE_POST_SUCCESS, payload: data.id}),
 		error => dispatch({type: DELETE_POST_FAILURE, error}),
 	)
 };

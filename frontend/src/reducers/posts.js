@@ -10,7 +10,8 @@ import {
 	FETCH_POSTS_REQUEST,
 	FETCH_POSTS_SUCCESS,
 	UPVOTE_POST_SUCCESS,
-	WRITE_POST_SUCCESS
+	WRITE_POST_SUCCESS,
+	DELETE_POST_SUCCESS
 } from '../actions/posts';
 import {handleFetchFailure, handleFetchRequest, handleFetchSuccess, initialState} from '../utils/stateUtils';
 
@@ -44,6 +45,11 @@ const posts = (state = initialState, action) => {
 		}
 		case WRITE_POST_SUCCESS: {
 			return {...state, data: [...state.data, action.post]};
+		}
+		case DELETE_POST_SUCCESS: {
+			const newState = {...state, data: [...state.data]};
+			newState.data = newState.data.filter(post => post.id !== action.payload);
+			return newState;
 		}
 		default:
 			return state;

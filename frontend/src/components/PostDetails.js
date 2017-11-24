@@ -34,7 +34,7 @@ class PostDetails extends Component {
 
 	render() {
 		const {post, comments, category} = this.props;
-		return (
+		return post ? (
 			<Container>
 
 				<AppHeader selected={category}/>
@@ -48,7 +48,7 @@ class PostDetails extends Component {
 					</Menu.Item>
 				</Menu>
 
-				<Post isPreview={false} onDeletePost={this.doDeletePost} post={post}/>
+				<Post isPreview={false} onDeletePost={this.doDeletePost} postId={post.id}/>
 
 				<div>
 					<Button floated={'right'} primary onClick={() => this.toggleWritePostModal()}>Write comment</Button>
@@ -75,7 +75,7 @@ class PostDetails extends Component {
 					))}
 				</div>
 			</Container>
-		)
+		) : null;
 	}
 }
 

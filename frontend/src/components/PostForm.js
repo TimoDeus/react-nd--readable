@@ -20,10 +20,10 @@ class PostForm extends Component {
 		super(props);
 		const {post, selectedCategory} = props;
 		this.state = {
-			formAuthor: post ? post.author : undefined,
-			formTitle: post ? post.title : undefined,
-			formCategory: post ? post.category : selectedCategory,
-			formBody: post ? post.body : undefined,
+			formAuthor: post ? post.author : '',
+			formTitle: post ? post.title : '',
+			formCategory: (post ? post.category : selectedCategory) || '',
+			formBody: post ? post.body : '',
 		}
 	}
 

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {deletePost, fetchAllPostsIfNeeded, fetchCategoryPostsIfNeeded, writePost} from '../actions/posts';
+import {fetchAllPostsIfNeeded, fetchCategoryPostsIfNeeded, writePost} from '../actions/posts';
 import {connect} from 'react-redux';
 import {Button, Card, Container, Menu, Modal} from 'semantic-ui-react';
 import Header from './Header';
@@ -22,7 +22,6 @@ class PostList extends Component {
 			writePostModalOpen: false
 		};
 		this.setSortOrder = this.setSortOrder.bind(this);
-		this.doDeletePost = this.doDeletePost.bind(this);
 	}
 
 	componentWillMount() {
@@ -50,16 +49,8 @@ class PostList extends Component {
 		this.setState({sortBy: data});
 	}
 
-	// TODO get rid of this, should be handled in reducer!
-	doDeletePost(postId) {
-		this.props.deletePostById(postId).then(
-			() => this.fetchData(this.props)
-		);
-		return false;
-	}
-
 	render() {
-		const {posts, category} = this.props;
+		const {posts, category, isFetching} = this.props;
 		const sortedPosts = posts.sort(this.state.sortBy.comparator);
 		return (
 			<Container>
@@ -67,7 +58,7 @@ class PostList extends Component {
 				<Header selected={category}/>
 
 				<Menu secondary>
-					<Menu.Item position='left'>
+					<Menu.Item>
 						<Button primary onClick={() => this.toggleWritePostModal()}>Write new post</Button>
 					</Menu.Item>
 					<Menu.Menu position='right'>
@@ -81,11 +72,11 @@ class PostList extends Component {
 
 				<Card.Group>
 					{sortedPosts.map(post => (
-						<Post key={post.id} isPreview={true} onDeletePost={this.doDeletePost} post={post}/>
+						<Post key={post.id} isPreview={true} postId={post.id}/>
 					))}
 				</Card.Group>
 
-				{!sortedPosts.length && <span className='empty'>Nothing to see, write the first post!</span>}
+				{!isFetching && !sortedPosts.length && <span className='empty'>Nothing to see, write the first post!</span>}
 
 				<Modal open={this.state.writePostModalOpen} onClose={() => this.toggleWritePostModal()}>
 					<Modal.Header>Write new post</Modal.Header>
@@ -101,13 +92,12 @@ class PostList extends Component {
 PostList.propTypes = {
 	category: PropTypes.string,
 	posts: PropTypes.array.isRequired,
-	deletePostById: PropTypes.func.isRequired,
+	isFetching: PropTypes.bool.isRequired,
 	fetchPostsIfNeeded: PropTypes.func.isRequired,
 	writeNewPost: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
-	deletePostById: postId => dispatch(deletePost(postId)),
 	fetchPostsIfNeeded: props => {
 		const fetcher = () => props.category ? fetchCategoryPostsIfNeeded(props.category) : fetchAllPostsIfNeeded();
 		return dispatch(fetcher());
@@ -116,6 +106,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => ({
+	isFetching: state.posts.isFetching,
 	posts: state.posts.data
 });
 
