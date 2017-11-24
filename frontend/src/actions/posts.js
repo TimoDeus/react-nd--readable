@@ -33,8 +33,10 @@ export const deletePost = postId => dispatch => {
 export const writePost = post => dispatch => {
 	dispatch({type: WRITE_POST_REQUEST});
 	return APIUtils.writePost(post).then(
-		() => dispatch({type: WRITE_POST_SUCCESS}),
-		error => dispatch({type: WRITE_POST_FAILURE, error}),
+		({data}) => {
+			return dispatch({type: WRITE_POST_SUCCESS, post: data})
+		},
+		error => dispatch({type: WRITE_POST_FAILURE, error})
 	)
 };
 

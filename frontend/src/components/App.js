@@ -1,26 +1,20 @@
 import React, {Component} from 'react';
-import Home from './Home';
-import {Link, Route} from 'react-router-dom';
-import Post from './Post';
-import {Container, Menu} from 'semantic-ui-react'
+import {Route} from 'react-router-dom';
+import PostDetails from './PostDetails';
+import PostList from './PostList';
 
 class App extends Component {
 
 	render() {
 		return (
-			<Container>
-				<Menu inverted>
-					<Menu.Item header>
-						<Link to='/'>Readable</Link>
-					</Menu.Item>
-				</Menu>
+			<div>
 				<Route exact path='/:category?' render={({match}) =>
-					<Home {...match.params} />
+					<PostList {...match.params} />
 				}/>
 				<Route exact path='/:category/:postId' render={({match}) =>
-					<Post {...match.params} />
+					<PostDetails {...match.params} />
 				}/>
-			</Container>
+			</div>
 		)
 	}
 }

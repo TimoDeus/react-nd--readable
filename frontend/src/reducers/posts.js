@@ -9,7 +9,8 @@ import {
 	FETCH_POSTS_FAILURE,
 	FETCH_POSTS_REQUEST,
 	FETCH_POSTS_SUCCESS,
-	UPVOTE_POST_SUCCESS
+	UPVOTE_POST_SUCCESS,
+	WRITE_POST_SUCCESS
 } from '../actions/posts';
 import {handleFetchFailure, handleFetchRequest, handleFetchSuccess, initialState} from '../utils/stateUtils';
 
@@ -40,6 +41,9 @@ const posts = (state = initialState, action) => {
 			const newState = {...state, data: [...state.data]};
 			newState.data.find(post => post.id === action.payload).voteScore--;
 			return newState;
+		}
+		case WRITE_POST_SUCCESS: {
+			return {...state, data: [...state.data, action.post]};
 		}
 		default:
 			return state;

@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {withRouter} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {fetchCategoriesIfNeeded} from '../actions/categories';
 import {Menu} from 'semantic-ui-react';
 
-export class CategoryList extends Component {
+export class Header extends Component {
 
 	constructor(props) {
 		super(props);
@@ -32,16 +32,24 @@ export class CategoryList extends Component {
 		const selected = this.props.selected || 'all';
 		const categories = this.getCategories();
 		return (
-			<Menu pointing secondary>
-				{categories.map(cat =>
-					<Menu.Item key={cat.name} name={cat.name} active={cat.name === selected} onClick={() => this.onTabChange(cat.path)}/>)}
+			<Menu inverted>
+				<Menu.Item header>
+					<Link to='/'>Readable</Link>
+				</Menu.Item>
+				<Menu.Menu position='right'>
+					{categories.map(cat =>
+						<Menu.Item
+							key={cat.name} name={cat.name}
+							active={cat.name === selected}
+							onClick={() => this.onTabChange(cat.path)}/>)}
+				</Menu.Menu>
 			</Menu>
 		);
 	}
 }
 
-CategoryList.propTypes = {
-	history: PropTypes.shape.isRequired,
+Header.propTypes = {
+	history: PropTypes.shape().isRequired,
 	categories: PropTypes.array.isRequired,
 	selected: PropTypes.string,
 	fetchCategoriesIfNeeded: PropTypes.func.isRequired
@@ -55,4 +63,4 @@ const mapStateToProps = state => ({
 	categories: state.categories.data,
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CategoryList));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

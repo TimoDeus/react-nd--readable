@@ -21,6 +21,5 @@ export const handleFetchFailure = (state, action) => ({
 export const handleFetchRequest = state => ({
 	...state,
 	isFetching: true,
-	error: initialState.error,
-	data: initialState.data
+	error: initialState.error
 });

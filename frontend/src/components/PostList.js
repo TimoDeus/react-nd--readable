@@ -2,11 +2,10 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {deletePost, fetchAllPostsIfNeeded, fetchCategoryPostsIfNeeded, writePost} from '../actions/posts';
 import {connect} from 'react-redux';
-import uuid from 'uuid'
-import {Button, Card, Container, Form, Icon, Menu, Modal} from 'semantic-ui-react';
-import {formatTimestamp} from '../utils/helper';
-import {Link} from 'react-router-dom';
-import VoteControls, {VOTE_POST} from './VoteControls';
+import {Button, Card, Container, Menu, Modal} from 'semantic-ui-react';
+import Header from './Header';
+import Post from './Post';
+import PostForm from './PostForm';
 
 const SORT_OPTIONS = [
 	{value: 'newest', comparator: (a, b) => b.timestamp - a.timestamp},
@@ -20,10 +19,10 @@ class PostList extends Component {
 		super(props);
 		this.state = {
 			sortBy: SORT_OPTIONS[0],
-			writePostModalOpen: false,
-			formData: {},
+			writePostModalOpen: false
 		};
 		this.setSortOrder = this.setSortOrder.bind(this);
+		this.doDeletePost = this.doDeletePost.bind(this);
 	}
 
 	componentWillMount() {
@@ -33,96 +32,56 @@ class PostList extends Component {
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.category !== this.props.category) {
 			this.fetchData(nextProps);
+		} else if (nextProps.posts.length > this.props.posts.length) {
+			this.toggleWritePostModal(false);
 		}
 	}
 
 	fetchData(props) {
-		return this.props.fetchPostsIfNeeded(props).then(
-			({data}) => this.setState({posts: data})
-		);
+		this.props.fetchPostsIfNeeded(props);
 	}
 
-	toggleWritePostModal() {
-		this.setState({writePostModalOpen: !this.state.writePostModalOpen, formData: {}, formValid: true});
+	toggleWritePostModal(show) {
+		const visible = show === undefined ? !this.state.writePostModalOpen : show;
+		this.setState({writePostModalOpen: visible});
 	}
 
 	setSortOrder(data) {
 		this.setState({sortBy: data});
 	}
 
+	// TODO get rid of this, should be handled in reducer!
 	doDeletePost(postId) {
 		this.props.deletePostById(postId).then(
 			() => this.fetchData(this.props)
 		);
 		return false;
-
 	}
 
-	handleChange = (e, {name, value}) => {
-		const newEntry = {[name]: value};
-		this.setState(prevState => ({...prevState, formData: {...prevState.formData, ...newEntry}}));
-	};
-
-	handleSubmit = () => {
-		const {formAuthor, formCategory, formPost, formTitle} = this.state.formData;
-		if (formAuthor && formCategory && formPost && formTitle) {
-			const post = {
-				id: uuid(),
-				title: formTitle,
-				body: formPost,
-				author: formAuthor,
-				timestamp: Date.now(),
-				category: formCategory
-			};
-			return this.props.writeNewPost(post).then(
-				() => this.fetchData(this.props).then(
-					() => this.toggleWritePostModal()
-				)
-			);
-		}
-	};
-
 	render() {
-		const {posts} = this.props;
+		const {posts, category} = this.props;
 		const sortedPosts = posts.sort(this.state.sortBy.comparator);
 		return (
-			<Container className='postsContainer'>
+			<Container>
+
+				<Header selected={category}/>
 
 				<Menu secondary>
-					<Menu.Item>
+					<Menu.Item position='left'>
 						<Button primary onClick={() => this.toggleWritePostModal()}>Write new post</Button>
 					</Menu.Item>
-					<Menu.Item position='right'>
+					<Menu.Menu position='right'>
 						{SORT_OPTIONS.map(option =>
 							(<Menu.Item key={option.value} name={option.value} option={option}
 													active={option.value === this.state.sortBy.value}
 													onClick={(event, data) => this.setSortOrder(data.option)}/>)
 						)}
-					</Menu.Item>
+					</Menu.Menu>
 				</Menu>
 
 				<Card.Group>
 					{sortedPosts.map(post => (
-						<Card key={post.id} fluid color='blue'>
-							<Card.Content>
-								<Card.Header>
-									<Link to={`/${post.category}/${post.id}`}>{post.title}</Link>
-									<div style={{float: 'right'}}><VoteControls type={VOTE_POST} id={post.id}/></div>
-								</Card.Header>
-								<Card.Meta>
-									Written by <b>{post.author}</b> in <Link to={`/${post.category}`}><b>{post.category}</b></Link>
-									| {formatTimestamp(post.timestamp)}
-								</Card.Meta>
-								<Card.Description floated='left'>
-								</Card.Description>
-							</Card.Content>
-							<Card.Content extra>
-								<Icon name='comment'/>
-								{post.commentCount} Comment(s)
-								<Button icon floated='right' size='mini' onClick={() => this.doDeletePost(post.id)}><Icon name='trash'/>
-									Delete</Button>
-							</Card.Content>
-						</Card>
+						<Post key={post.id} isPreview={true} onDeletePost={this.doDeletePost} post={post}/>
 					))}
 				</Card.Group>
 
@@ -131,19 +90,7 @@ class PostList extends Component {
 				<Modal open={this.state.writePostModalOpen} onClose={() => this.toggleWritePostModal()}>
 					<Modal.Header>Write new post</Modal.Header>
 					<Modal.Content>
-						<Form onSubmit={this.handleSubmit}>
-							<Form.Group widths='equal'>
-								<Form.Input label='Author' name='formAuthor' placeholder='Author' required onChange={this.handleChange}/>
-								<Form.Select
-									label='Category' placeholder='Category' name='formCategory' required value={this.props.category}
-									onChange={this.handleChange}
-									options={this.props.categories.map(cat => ({key: cat.name, value: cat.name, text: cat.name}))}
-								/>
-							</Form.Group>
-							<Form.Input label='Title' name='formTitle' placeholder='Title' required onChange={this.handleChange}/>
-							<Form.TextArea label='Post' name='formPost' required onChange={this.handleChange}/>
-							<Button type='submit'>Submit</Button>
-						</Form>
+						<PostForm selectedCategory={category}/>
 					</Modal.Content>
 				</Modal>
 			</Container>
@@ -154,7 +101,6 @@ class PostList extends Component {
 PostList.propTypes = {
 	category: PropTypes.string,
 	posts: PropTypes.array.isRequired,
-	categories: PropTypes.array.isRequired,
 	deletePostById: PropTypes.func.isRequired,
 	fetchPostsIfNeeded: PropTypes.func.isRequired,
 	writeNewPost: PropTypes.func.isRequired,
@@ -170,8 +116,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => ({
-	posts: state.posts.data,
-	categories: state.categories.data,
+	posts: state.posts.data
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostList);
