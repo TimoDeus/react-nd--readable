@@ -7,9 +7,9 @@ export const FETCH_CATEGORIES_FAILURE = 'FETCH_CATEGORIES_FAILURE';
 const fetchCategories = () => dispatch => {
 	dispatch({type: FETCH_CATEGORIES_REQUEST});
 	return APIUtils.fetchCategories().then(
-		res => dispatch({
+		({data}) => dispatch({
 				type: FETCH_CATEGORIES_SUCCESS,
-				data: res.data.categories
+				data: data.categories
 			}
 		),
 		error => dispatch({

@@ -9,9 +9,9 @@ export const FETCH_POSTS_FAILURE = 'FETCH_POSTS_FAILURE';
 export const FETCH_CATEGORY_POSTS_SUCCESS = 'FETCH_CATEGORY_POSTS_SUCCESS';
 export const FETCH_CATEGORY_POSTS_REQUEST = 'FETCH_CATEGORY_POSTS_REQUEST';
 export const FETCH_CATEGORY_POSTS_FAILURE = 'FETCH_CATEGORY_POSTS_FAILURE';
-export const WRITE_POST_REQUEST = 'WRITE_POST_REQUEST';
-export const WRITE_POST_SUCCESS = 'WRITE_POST_SUCCESS';
-export const WRITE_POST_FAILURE = 'WRITE_POST_FAILURE';
+export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
+export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
+export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
 export const EDIT_POST_REQUEST = 'EDIT_POST_REQUEST';
 export const EDIT_POST_SUCCESS = 'EDIT_POST_SUCCESS';
 export const EDIT_POST_FAILURE = 'EDIT_POST_FAILURE';
@@ -34,10 +34,10 @@ export const deletePost = postId => dispatch => {
 };
 
 export const addPost = post => dispatch => {
-	dispatch({type: WRITE_POST_REQUEST});
-	return APIUtils.writePost(post).then(
-		({data}) => dispatch({type: WRITE_POST_SUCCESS, post: data}),
-		error => dispatch({type: WRITE_POST_FAILURE, error})
+	dispatch({type: ADD_POST_REQUEST});
+	return APIUtils.addPost(post).then(
+		({data}) => dispatch({type: ADD_POST_SUCCESS, post: data}),
+		error => dispatch({type: ADD_POST_FAILURE, error})
 	)
 };
 
@@ -101,7 +101,7 @@ const fetchPost = postId => doFetchPosts(
 		failure: FETCH_POST_FAILURE
 	});
 
-const shouldFetchPosts = ({posts}) => !posts.isFetching && !posts.error;
+const shouldFetchPosts = ({posts}) => !posts.isFetching;
 
 export const fetchAllPostsIfNeeded = () => (dispatch, getState) =>
 	shouldFetchPosts(getState()) ? dispatch(fetchAllPosts()) : Promise.resolve();

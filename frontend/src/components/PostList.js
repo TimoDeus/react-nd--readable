@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {fetchAllPostsIfNeeded, fetchCategoryPostsIfNeeded, addPost} from '../actions/posts';
 import {connect} from 'react-redux';
-import {Button, Card, Container, Menu, Modal} from 'semantic-ui-react';
+import {Button, Card, Container, Loader, Menu, Message, Modal} from 'semantic-ui-react';
 import Header from './Header';
 import Post from './Post';
 import PostForm from './PostForm';
@@ -55,6 +55,8 @@ class PostList extends Component {
 		return (
 			<Container>
 
+				<Loader active={isFetching} />
+
 				<Header selected={category}/>
 
 				<Menu secondary>
@@ -76,7 +78,9 @@ class PostList extends Component {
 					))}
 				</Card.Group>
 
-				{!isFetching && !sortedPosts.length && <span className='empty'>Nothing to see, write the first post!</span>}
+				{!isFetching && !sortedPosts.length &&
+					<Message>Nothing to see, write the first post!</Message>
+				}
 
 				<Modal open={this.state.writePostModalOpen} onClose={() => this.toggleWritePostModal()}>
 					<Modal.Header>Write new post</Modal.Header>
@@ -94,7 +98,7 @@ PostList.propTypes = {
 	posts: PropTypes.array.isRequired,
 	isFetching: PropTypes.bool.isRequired,
 	fetchPostsIfNeeded: PropTypes.func.isRequired,
-	dispatchAddPost: PropTypes.func.isRequired,
+	dispatchAddComment: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
@@ -102,7 +106,7 @@ const mapDispatchToProps = dispatch => ({
 		const fetcher = () => props.category ? fetchCategoryPostsIfNeeded(props.category) : fetchAllPostsIfNeeded();
 		return dispatch(fetcher());
 	},
-	dispatchAddPost: post => dispatch(addPost(post))
+	dispatchAddComment: post => dispatch(addPost(post))
 });
 
 const mapStateToProps = state => ({

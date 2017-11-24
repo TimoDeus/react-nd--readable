@@ -10,7 +10,7 @@ import {
 	FETCH_POSTS_REQUEST,
 	FETCH_POSTS_SUCCESS,
 	UPVOTE_POST_SUCCESS,
-	WRITE_POST_SUCCESS,
+	ADD_POST_SUCCESS,
 	DELETE_POST_SUCCESS,
 	EDIT_POST_SUCCESS
 } from '../actions/posts';
@@ -44,7 +44,7 @@ const posts = (state = initialState, action) => {
 			newState.data.find(post => post.id === action.payload).voteScore--;
 			return newState;
 		}
-		case WRITE_POST_SUCCESS: {
+		case ADD_POST_SUCCESS: {
 			return {...state, data: [...state.data, action.post]};
 		}
 		case DELETE_POST_SUCCESS: {

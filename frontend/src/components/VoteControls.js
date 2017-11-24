@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {upvotePost, downvotePost} from '../actions/posts';
-import {upvoteComment, downvoteComment} from '../actions/comments';
+import {downvotePost, upvotePost} from '../actions/posts';
+import {downvoteComment, upvoteComment} from '../actions/comments';
+import {Button} from 'semantic-ui-react';
 
 export const VOTE_COMMENT = 'comment';
 export const VOTE_POST = 'post';
@@ -18,12 +19,12 @@ class VoteControls extends Component {
 	render() {
 		const {voteScore} = this.props;
 		return (
-			<div>
-				<button onClick={() => this.triggerDownvote()}>-</button>
-				<span className='voteScore'>{voteScore}</span>
-				<button onClick={() => this.triggerUpvote()}>+</button>
-			</div>
-		)
+			<Button.Group compact basic size='mini'>
+				<Button icon='minus' onClick={() => this.triggerDownvote()}/>
+				<Button>{voteScore}</Button>
+				<Button icon='plus' onClick={() => this.triggerUpvote()}/>
+			</Button.Group>
+		);
 	}
 
 	triggerUpvote() {
@@ -45,7 +46,7 @@ VoteControls.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
 	const obj = ownProps.type === VOTE_COMMENT ? state.comments : state.posts;
-	return  obj.data.length ? {
+	return obj.data.length ? {
 		voteScore: obj.data.find(item => item.id === ownProps.id).voteScore
 	} : {};
 };

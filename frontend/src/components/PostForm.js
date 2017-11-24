@@ -40,7 +40,7 @@ class PostForm extends Component {
 				timestamp: Date.now(),
 				category: formCategory
 			};
-			return this.props.dispatchAddPost(post);
+			return this.props.dispatchAddComment(post);
 		}
 	}
 
@@ -53,7 +53,7 @@ class PostForm extends Component {
 				title: formTitle,
 				body: formBody,
 			};
-			return this.props.dispatchEditPost(post);
+			return this.props.dispatchEditComment(post);
 		}
 	}
 
@@ -89,8 +89,8 @@ class PostForm extends Component {
 }
 
 PostForm.propTypes = {
-	dispatchAddPost: PropTypes.func.isRequired,
-	dispatchEditPost: PropTypes.func.isRequired,
+	dispatchAddComment: PropTypes.func.isRequired,
+	dispatchEditComment: PropTypes.func.isRequired,
 	categories: PropTypes.array.isRequired,
 	selectedCategory: PropTypes.string,
 	postId: PropTypes.string,
@@ -98,8 +98,8 @@ PostForm.propTypes = {
 };
 
 const mapDispatchToProps = dispatch => ({
-	dispatchAddPost: post => dispatch(addPost(post)),
-	dispatchEditPost: post => dispatch(editPost(post))
+	dispatchAddComment: post => dispatch(addPost(post)),
+	dispatchEditComment: post => dispatch(editPost(post))
 });
 
 const mapStateToProps = (state, ownProps) => ({
