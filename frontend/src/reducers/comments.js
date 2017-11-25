@@ -1,8 +1,14 @@
 import {
-	FETCH_COMMENTS_SUCCESS, FETCH_COMMENTS_FAILURE, FETCH_COMMENTS_REQUEST,
-	UPVOTE_COMMENT_SUCCESS, DOWNVOTE_COMMENT_SUCCESS, ADD_COMMENT_SUCCESS, DELETE_COMMENT_SUCCESS, EDIT_COMMENT_SUCCESS
+	ADD_COMMENT_SUCCESS,
+	DELETE_COMMENT_SUCCESS,
+	DOWNVOTE_COMMENT_SUCCESS,
+	EDIT_COMMENT_SUCCESS,
+	FETCH_COMMENTS_FAILURE,
+	FETCH_COMMENTS_REQUEST,
+	FETCH_COMMENTS_SUCCESS,
+	UPVOTE_COMMENT_SUCCESS
 } from '../actions/comments';
-import {initialState, handleFetchFailure, handleFetchRequest, handleFetchSuccess} from '../utils/stateUtils';
+import {handleFetchFailure, handleFetchRequest, handleFetchSuccess, initialState} from '../utils/stateUtils';
 
 const comments = (state = initialState, action) => {
 	switch (action.type) {
