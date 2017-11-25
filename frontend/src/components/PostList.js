@@ -24,7 +24,7 @@ class PostList extends Component {
 		this.setSortOrder = this.setSortOrder.bind(this);
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.fetchData(this.props);
 	}
 
@@ -55,7 +55,7 @@ class PostList extends Component {
 		return (
 			<Container>
 
-				<Loader active={isFetching} />
+				<Loader active={isFetching}/>
 
 				<Header selected={category}/>
 
@@ -79,7 +79,7 @@ class PostList extends Component {
 				</Card.Group>
 
 				{!isFetching && !sortedPosts.length &&
-					<Message>Nothing to see, write the first post!</Message>
+				<Message>Nothing to see, write the first post!</Message>
 				}
 
 				<Modal open={this.state.writePostModalOpen} onClose={() => this.toggleWritePostModal()}>

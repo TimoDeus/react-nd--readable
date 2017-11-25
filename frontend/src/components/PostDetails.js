@@ -20,7 +20,7 @@ class PostDetails extends Component {
 		}
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.props.fetchCommentsIfNeeded();
 		this.props.fetchPost();
 	}
@@ -43,6 +43,7 @@ class PostDetails extends Component {
 	render() {
 		const {post, comments, category, isFetching, error} = this.props;
 		const sortedComments = comments.sort((a, b) => b.timestamp - a.timestamp);
+		const isValidContent = !error && post && Object.keys(post).length > 0 && !post.deleted;
 		return (
 			<Container>
 
@@ -56,8 +57,7 @@ class PostDetails extends Component {
 					</Menu.Item>
 				</Menu>
 
-
-				{!isFetching && (error || !post) && (
+				{!isFetching && !isValidContent && (
 					<Message
 						negative
 						icon='bug'
@@ -66,7 +66,7 @@ class PostDetails extends Component {
 					/>
 				)}
 
-				{!isFetching && post && (
+				{!isFetching && isValidContent && (
 					<div>
 						<Post isPreview={false} postId={post.id}/>
 						<div>

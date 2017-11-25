@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {downvotePost, upvotePost} from '../actions/posts';
@@ -8,33 +8,26 @@ import {Button} from 'semantic-ui-react';
 export const VOTE_COMMENT = 'comment';
 export const VOTE_POST = 'post';
 
-class VoteControls extends Component {
+const VoteControls = props => {
 
-	constructor(props) {
-		super(props);
-		this.triggerUpvote = this.triggerUpvote.bind(this);
-		this.triggerDownvote = this.triggerDownvote.bind(this);
-	}
+	const triggerUpvote = () => {
+		props.upvote();
+	};
 
-	render() {
-		const {voteScore} = this.props;
-		return (
-			<Button.Group compact basic size='mini'>
-				<Button icon='minus' onClick={() => this.triggerDownvote()}/>
-				<Button>{voteScore}</Button>
-				<Button icon='plus' onClick={() => this.triggerUpvote()}/>
-			</Button.Group>
-		);
-	}
+	const triggerDownvote = () => {
+		props.downvote();
+	};
 
-	triggerUpvote() {
-		this.props.upvote();
-	}
+	const {voteScore} = props;
+	return (
+		<Button.Group compact basic size='mini'>
+			<Button icon='minus' onClick={triggerDownvote}/>
+			<Button>{voteScore}</Button>
+			<Button icon='plus' onClick={triggerUpvote}/>
+		</Button.Group>
+	);
+};
 
-	triggerDownvote() {
-		this.props.downvote();
-	}
-}
 
 VoteControls.propTypes = {
 	id: PropTypes.string.isRequired,

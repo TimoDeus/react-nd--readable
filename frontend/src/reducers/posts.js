@@ -13,7 +13,7 @@ import {
 	FETCH_POSTS_REQUEST,
 	FETCH_POSTS_SUCCESS,
 	UPVOTE_POST_SUCCESS
-} from '../actions/posts';
+} from '../actions/actionTypes';
 import {handleFetchFailure, handleFetchRequest, handleFetchSuccess, initialState} from '../utils/stateUtils';
 
 const posts = (state = initialState, action) => {

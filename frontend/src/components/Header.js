@@ -13,7 +13,7 @@ export class Header extends Component {
 		this.getCategories = this.getCategories.bind(this);
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.props.fetchCategoriesIfNeeded();
 	}
 

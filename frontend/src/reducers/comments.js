@@ -7,7 +7,7 @@ import {
 	FETCH_COMMENTS_REQUEST,
 	FETCH_COMMENTS_SUCCESS,
 	UPVOTE_COMMENT_SUCCESS
-} from '../actions/comments';
+} from '../actions/actionTypes';
 import {handleFetchFailure, handleFetchRequest, handleFetchSuccess, initialState} from '../utils/stateUtils';
 
 const comments = (state = initialState, action) => {
